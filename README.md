@@ -125,19 +125,10 @@ src/main/java/com/example/demoproject/
 ```bash
 # Run all tests
 mvn test
-
-# Run specific test class
-mvn test -Dtest=DrawExecutionServiceTest
-
-# Run with coverage
-mvn test jacoco:report
 ```
 
 ### Test Coverage
 - ✅ Unit tests for all services
-- ✅ Integration tests for controllers
-- ✅ Security configuration tests
-- ✅ Database integration tests
 
 ---
 
@@ -236,30 +227,4 @@ mvn test jacoco:report
 
 > **Note:** These accounts are automatically created for development and demo purposes.
 
----
-
-## 🚀 Getting Started
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/tab93571/amwayDemo.git
-   cd amwayDemo
-   ```
-
-2. **Run the application**
-   ```bash
-   mvn spring-boot:run
-   ```
-
-3. **Access the application**
-   - Open http://localhost:8080/login
-   - Login with demo accounts above
-   - Explore different modules
-
-4. **Test the features**
-   - Try the lucky draw system
-   - Open http://localhost:8080/calculator Use the calculator
-   - Explore admin features (admin account)
-
----
 

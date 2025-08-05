@@ -253,37 +253,15 @@ mvn test jacoco:report
    ```
 
 3. **Access the application**
-   - Open http://localhost:8080
+   - Open http://localhost:8080/login
    - Login with demo accounts above
    - Explore different modules
 
 4. **Test the features**
    - Try the lucky draw system
-   - Use the calculator
+   - Open http://localhost:8080/calculator Use the calculator
    - Explore admin features (admin account)
    - Check API documentation
 
 ---
 
-## 📝 License
-
-This project is licensed under the MIT License.
-
----
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new features
-5. Submit a pull request
-
----
-
-## 📞 Support
-
-For support and questions:
-- **Email:** demo@example.com
-- **Documentation:** http://localhost:8080/swagger-ui.html
-- **Issues:** Create an issue on GitHub

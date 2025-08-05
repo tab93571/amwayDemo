@@ -9,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -26,10 +25,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-        
-        // Skip JWT processing for calculator endpoints
+
         String requestURI = request.getRequestURI();
-        if (requestURI.startsWith("/api/calculator/")) {
+        if (requestURI.startsWith("/api/calculator/") ||
+                requestURI.startsWith("/swagger-ui") ||
+                requestURI.startsWith("/v3/api-docs") ||
+                requestURI.startsWith("/api-docs") ||
+                requestURI.startsWith("/swagger-resources") ||
+                requestURI.startsWith("/webjars") ||
+                requestURI.equals("/") ||
+                requestURI.equals("/login") ||
+                requestURI.equals("/calculator") ||
+                requestURI.equals("/luckydraw") ||
+                requestURI.equals("/admin")) {
             chain.doFilter(request, response);
             return;
         }

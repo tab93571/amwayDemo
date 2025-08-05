@@ -71,7 +71,7 @@ public class AdminActivityService {
         }
 
         return new ActivityResponse(
-            savedActivity.getId().toString(), // Use id as activityId
+            savedActivity.getId().toString(),
             savedActivity.getName(),
             savedActivity.getDescription(),
             savedActivity.getMaxDraws(),

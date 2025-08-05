@@ -22,20 +22,21 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 // Web pages
-                                "/", "/login", "/calculator", "/luckydraw", "/admin",
-                                // Swagger and OpenAPI endpoints
-                                "/swagger-ui.html", "/swagger-ui/**",
-                                "/v3/api-docs/**", "/v3/api-docs.yaml",
-                                "/api-docs", "/api-docs/**",
-                                "/api/auth/**", "/api/luckydraw/health", "/api/luckydraw/test-error",
-                                // Calculator API endpoints
+                                "/", "/login", "/calculator",
+                                "/luckydraw", "/admin",
+                                "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/api-docs", "/api-docs/**",
+                                "/swagger-resources/**", "/webjars/**", "/swagger-ui/index.html",
+                                "/api/auth/**",
                                 "/api/calculator/**"
                         ).permitAll()
-                        .requestMatchers("/api/luckydraw/draw", "/api/luckydraw/draw/multiple", "/api/luckydraw/user-activity/**", "/api/luckydraw/test-error").hasAuthority("ROLE_USER")
+                        .requestMatchers("/api/luckydraw/**").hasAuthority("ROLE_USER")
                         .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth.anyRequest().permitAll()
+                );
+
         return http.build();
     }
     

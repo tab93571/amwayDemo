@@ -47,7 +47,6 @@ public class AdminPrizeService {
         // Validate total probability before updating
         validateTotalProbability(activityId, prizeId, request.getProbability());
 
-        // Update prize details
         prize.setName(request.getName());
         prize.setQuantity(request.getQuantity());
         prize.setDescription(request.getDescription());
@@ -62,7 +61,7 @@ public class AdminPrizeService {
             savedPrize.getProbability()
         );
 
-        // Log the audit
+
         try {
             String adminUsername = userActivityService.getCurrentUsername();
             auditService.logAction(adminUsername, "UPDATE_PRIZE", "PRIZE", prizeId, oldData, newData);
@@ -122,7 +121,7 @@ public class AdminPrizeService {
                         prize.getName(),
                         prize.getDescription(),
                         prize.getQuantity(),
-                        prize.getQuantity(), // remainingQuantity - same as quantity for now
+                        prize.getQuantity(),
                         prize.getProbability(),
                         prize.getActivity().getId(),
                         null, // createdAt - not available in simplified entity

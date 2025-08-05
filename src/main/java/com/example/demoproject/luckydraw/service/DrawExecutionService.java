@@ -73,30 +73,29 @@ public class DrawExecutionService {
         List<Prize> availablePrizes = drawValidationService.getAvailablePrizes(activity);
 
         for (int i = 0; i < request.getDrawCount(); i++) {
-            try {
-                Prize selectedPrize = prizeSelectionUtil.selectPrize(availablePrizes);
-                DrawRecord record = new DrawRecord(
+            DrawRecord record = new DrawRecord(
                     user,
                     activity,
-                    selectedPrize
-                );
+                    null
+            );
+            try {
+                Prize selectedPrize = prizeSelectionUtil.selectPrize(availablePrizes);
+                record.setPrize(selectedPrize);
                 if (selectedPrize == null) {
                     results.add(new DrawResult("Thank You", "Better luck next time!", record.getDrawTime()));
                 }else{
                     updatePrizeInventory(selectedPrize);
                     results.add(new DrawResult(selectedPrize, record.getDrawTime()));
                 }
-                drawRecordRepository.save(record);
             } catch (LuckyDrawException e) {
-                if (e.getErrorCode() == ErrorConstants.ErrorType.NO_PRIZES_AVAILABLE.getCode() ||
-                        e.getErrorCode() == ErrorConstants.ErrorType.SYSTEM_BUSY.getCode()) {
-                    results.add(new DrawResult("Thank You", "Better luck next time!", LocalDateTime.now()));
-                }
+                results.add(new DrawResult("Thank You", "Better luck next time!", LocalDateTime.now()));
+                record.setPrize(null);
                 e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
                 break;
             }
+            drawRecordRepository.save(record);
         }
         
         return new MultipleDrawResult(results);

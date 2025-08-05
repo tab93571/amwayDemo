@@ -22,14 +22,14 @@ mvn spring-boot:run
 ```
 
 ### 🌐 Application URLs
-| Page | URL |
-|------|-----|
-| **Main Page** | http://localhost:8080 |
-| **Login** | http://localhost:8080/login |
+| Page                | URL |
+|---------------------|-----|
+| **Login**           | http://localhost:8080/login |
 | **Admin Dashboard** | http://localhost:8080/admin |
-| **Lucky Draw** | http://localhost:8080/luckydraw |
-| **Calculator** | http://localhost:8080/calculator |
-| **API Documentation** | http://localhost:8080/swagger-ui.html |
+| **Lucky Draw**      | http://localhost:8080/luckydraw |
+| **Calculator**      | http://localhost:8080/calculator |
+| **Swagger**         | http://localhost:8080/swagger-ui/index.html |
+
 
 ---
 
@@ -157,7 +157,7 @@ mvn test jacoco:report
 ## 📚 Technology Stack
 
 ### **Backend**
-- **Framework:** Spring Boot 3.4.0
+- **Framework:** Spring Boot 3.2.8
 - **Security:** Spring Security 6.4.1
 - **Data:** Spring Data JPA
 - **Validation:** Bean Validation
@@ -178,7 +178,7 @@ mvn test jacoco:report
 - **Library:** JJWT 0.11.5
 
 ### **Documentation**
-- **API Docs:** Swagger/OpenAPI 2.4.0
+- **API Docs:** Swagger/OpenAPI 2.2.0
 - **UI:** Swagger UI
 
 ### **Testing**
@@ -260,7 +260,6 @@ mvn test jacoco:report
    - Try the lucky draw system
    - Open http://localhost:8080/calculator Use the calculator
    - Explore admin features (admin account)
-   - Check API documentation
 
 ---
 

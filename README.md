@@ -184,7 +184,6 @@ mvn test jacoco:report
 ### **Testing**
 - **Framework:** JUnit 5
 - **Mocking:** Mockito
-- **Coverage:** JaCoCo
 
 ### **Build & Deploy**
 - **Build Tool:** Maven

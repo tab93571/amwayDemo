@@ -1,0 +1,384 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------< com.example:DemoProject >-----------------------
+[INFO] Building DemoProject 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:3.4.0:run (default-cli) > test-compile @ DemoProject >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ DemoProject ---
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] Copying 4 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ DemoProject ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ DemoProject ---
+[INFO] skip non existing resourceDirectory /Users/tab9357/develop/DemoProject/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ DemoProject ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] <<< spring-boot:3.4.0:run (default-cli) < test-compile @ DemoProject <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:3.4.0:run (default-cli) @ DemoProject ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.0)
+
+2025-08-03T18:24:28.663+08:00  INFO 31623 --- [           main] c.e.demoproject.DemoProjectApplication   : Starting DemoProjectApplication using Java 21.0.2 with PID 31623 (/Users/tab9357/develop/DemoProject/target/classes started by tab9357 in /Users/tab9357/develop/DemoProject)
+2025-08-03T18:24:28.664+08:00 DEBUG 31623 --- [           main] c.e.demoproject.DemoProjectApplication   : Running with Spring Boot v3.4.0, Spring v6.2.0
+2025-08-03T18:24:28.664+08:00  INFO 31623 --- [           main] c.e.demoproject.DemoProjectApplication   : The following 1 profile is active: "dev"
+2025-08-03T18:24:29.091+08:00  INFO 31623 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-03T18:24:29.127+08:00  INFO 31623 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 30 ms. Found 5 JPA repository interfaces.
+2025-08-03T18:24:29.401+08:00  INFO 31623 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-08-03T18:24:29.409+08:00  INFO 31623 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-08-03T18:24:29.409+08:00  INFO 31623 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.33]
+2025-08-03T18:24:29.443+08:00  INFO 31623 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-08-03T18:24:29.444+08:00  INFO 31623 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 759 ms
+2025-08-03T18:24:29.458+08:00  INFO 31623 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-08-03T18:24:29.559+08:00  INFO 31623 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:devdb user=SA
+2025-08-03T18:24:29.560+08:00  INFO 31623 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-08-03T18:24:29.565+08:00  INFO 31623 --- [           main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:devdb'
+2025-08-03T18:24:29.592+08:00 DEBUG 31623 --- [           main] c.e.demoproject.security.JwtAuthFilter   : Filter 'jwtAuthFilter' configured for use
+2025-08-03T18:24:29.642+08:00  INFO 31623 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-03T18:24:29.679+08:00  INFO 31623 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.2.Final
+2025-08-03T18:24:29.697+08:00  INFO 31623 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-08-03T18:24:29.852+08:00  INFO 31623 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-03T18:24:29.882+08:00  WARN 31623 --- [           main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-03T18:24:29.889+08:00  INFO 31623 --- [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-08-03T18:24:30.312+08:00  INFO 31623 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-03T18:24:30.318+08:00 DEBUG 31623 --- [           main] org.hibernate.SQL                        : 
+    drop table if exists activities cascade 
+Hibernate: 
+    drop table if exists activities cascade 
+2025-08-03T18:24:30.320+08:00 DEBUG 31623 --- [           main] org.hibernate.SQL                        : 
+    drop table if exists draw_records cascade 
+Hibernate: 
+    drop table if exists draw_records cascade 
+2025-08-03T18:24:30.320+08:00 DEBUG 31623 --- [           main] org.hibernate.SQL                        : 
+    drop table if exists prizes cascade 
+Hibernate: 
+    drop table if exists prizes cascade 
+2025-08-03T18:24:30.320+08:00 DEBUG 31623 --- [           main] org.hibernate.SQL                        : 
+    drop table if exists users cascade 
+Hibernate: 
+    drop table if exists users cascade 
+2025-08-03T18:24:30.322+08:00 DEBUG 31623 --- [           main] org.hibernate.SQL                        : 
+    create table activities (
+        is_active boolean not null,
+        max_draws_per_user integer not null,
+        created_at timestamp(6) not null,
+        end_time timestamp(6) not null,
+        id bigint generated by default as identity,
+        start_time timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        activity_id varchar(255) not null unique,
+        description varchar(255) not null,
+        name varchar(255) not null,
+        primary key (id)
+    )
+Hibernate: 
+    create table activities (
+        is_active boolean not null,
+        max_draws_per_user integer not null,
+        created_at timestamp(6) not null,
+        end_time timestamp(6) not null,
+        id bigint generated by default as identity,
+        start_time timestamp(6) not null,
+        updated_at timestamp(6) not null,
+        activity_id varchar(255) not null unique,
+        description varchar(255) not null,
+        name varchar(255) not null,
+        primary key (id)
+    )
+2025-08-03T18:24:30.327+08:00 DEBUG 31623 --- [           main] org.hibernate.SQL                        : 
+    create table draw_records (
+        draw_number integer not null,
+        draw_time timestamp(6) not null,
+        id bigint generated by default as identity,
+        prize_id bigint,
+        activity_id varchar(255) not null,
+        session_id varchar(255) not null,
+        user_id varchar(255) not null,
+        primary key (id)
+    )
+Hibernate: 
+    create table draw_records (
+        draw_number integer not null,
+        draw_time timestamp(6) not null,
+        id bigint generated by default as identity,
+        prize_id bigint,
+        activity_id varchar(255) not null,
+        session_id varchar(255) not null,
+        user_id varchar(255) not null,
+        primary key (id)
+    )
+2025-08-03T18:24:30.327+08:00 DEBUG 31623 --- [           main] org.hibernate.SQL                        : 
+    create table prizes (
+        is_thank_you boolean not null,
+        probability numeric(5,4) not null,
+        quantity integer not null,
+        id bigint generated by default as identity,
+        version bigint,
+        activity_id varchar(255) not null,
+        description varchar(255) not null,
+        name varchar(255) not null,
+        primary key (id)
+    )
+Hibernate: 
+    create table prizes (
+        is_thank_you boolean not null,
+        probability numeric(5,4) not null,
+        quantity integer not null,
+        id bigint generated by default as identity,
+        version bigint,
+        activity_id varchar(255) not null,
+        description varchar(255) not null,
+        name varchar(255) not null,
+        primary key (id)
+    )
+2025-08-03T18:24:30.328+08:00 DEBUG 31623 --- [           main] org.hibernate.SQL                        : 
+    create table users (
+        draw_limit integer not null,
+        remaining_draws integer not null,
+        created_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        updated_at timestamp(6) not null,
+        password varchar(255) not null,
+        user_id varchar(255) not null unique,
+        username varchar(255) not null unique,
+        primary key (id)
+    )
+Hibernate: 
+    create table users (
+        draw_limit integer not null,
+        remaining_draws integer not null,
+        created_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        updated_at timestamp(6) not null,
+        password varchar(255) not null,
+        user_id varchar(255) not null unique,
+        username varchar(255) not null unique,
+        primary key (id)
+    )
+2025-08-03T18:24:30.329+08:00 DEBUG 31623 --- [           main] org.hibernate.SQL                        : 
+    alter table if exists draw_records 
+       add constraint FKq2163i7b93yh5avx8ocfcyh35 
+       foreign key (prize_id) 
+       references prizes
+Hibernate: 
+    alter table if exists draw_records 
+       add constraint FKq2163i7b93yh5avx8ocfcyh35 
+       foreign key (prize_id) 
+       references prizes
+2025-08-03T18:24:30.336+08:00  INFO 31623 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-08-03T18:24:30.473+08:00  INFO 31623 --- [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-08-03T18:24:30.828+08:00  WARN 31623 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-03T18:24:30.843+08:00  INFO 31623 --- [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name authService
+2025-08-03T18:24:30.881+08:00  INFO 31623 --- [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2025-08-03T18:24:30.916+08:00 DEBUG 31623 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : 35 mappings in 'requestMappingHandlerMapping'
+2025-08-03T18:24:30.952+08:00 DEBUG 31623 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-08-03T18:24:31.009+08:00 DEBUG 31623 --- [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-08-03T18:24:31.045+08:00 DEBUG 31623 --- [           main] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-08-03T18:24:31.136+08:00  INFO 31623 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-08-03T18:24:31.142+08:00  INFO 31623 --- [           main] c.e.demoproject.DemoProjectApplication   : Started DemoProjectApplication in 2.657 seconds (process running for 2.817)
+2025-08-03T18:24:31.190+08:00 DEBUG 31623 --- [           main] org.hibernate.SQL                        : 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.username=? 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.username=? 
+    fetch
+        first ? rows only
+2025-08-03T18:24:31.307+08:00 DEBUG 31623 --- [           main] org.hibernate.SQL                        : 
+    insert 
+    into
+        users
+        (created_at, draw_limit, password, remaining_draws, updated_at, user_id, username, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        users
+        (created_at, draw_limit, password, remaining_draws, updated_at, user_id, username, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+2025-08-03T18:24:31.310+08:00  WARN 31623 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 23502, SQLState: 23502
+2025-08-03T18:24:31.311+08:00 ERROR 31623 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : NULL not allowed for column "USER_ID"; SQL statement:
+insert into users (created_at,draw_limit,password,remaining_draws,updated_at,user_id,username,id) values (?,?,?,?,?,?,?,default) [23502-232]
+2025-08-03T18:24:31.315+08:00  INFO 31623 --- [           main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-08-03T18:24:31.322+08:00 ERROR 31623 --- [           main] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.dao.DataIntegrityViolationException: could not execute statement [NULL not allowed for column "USER_ID"; SQL statement:
+insert into users (created_at,draw_limit,password,remaining_draws,updated_at,user_id,username,id) values (?,?,?,?,?,?,?,default) [23502-232]] [insert into users (created_at,draw_limit,password,remaining_draws,updated_at,user_id,username,id) values (?,?,?,?,?,?,?,default)]; SQL [insert into users (created_at,draw_limit,password,remaining_draws,updated_at,user_id,username,id) values (?,?,?,?,?,?,?,default)]; constraint [null]
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:290) ~[spring-orm-6.2.0.jar:6.2.0]
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:241) ~[spring-orm-6.2.0.jar:6.2.0]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:560) ~[spring-orm-6.2.0.jar:6.2.0]
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61) ~[spring-tx-6.2.0.jar:6.2.0]
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:343) ~[spring-tx-6.2.0.jar:6.2.0]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:160) ~[spring-tx-6.2.0.jar:6.2.0]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.0.jar:6.2.0]
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:165) ~[spring-data-jpa-3.4.0.jar:3.4.0]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.0.jar:6.2.0]
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223) ~[spring-aop-6.2.0.jar:6.2.0]
+	at jdk.proxy2/jdk.proxy2.$Proxy151.save(Unknown Source) ~[na:na]
+	at com.example.demoproject.config.DataInitializer.initializeUsers(DataInitializer.java:73) ~[classes/:na]
+	at com.example.demoproject.config.DataInitializer.run(DataInitializer.java:36) ~[classes/:na]
+	at org.springframework.boot.SpringApplication.lambda$callRunner$5(SpringApplication.java:788) ~[spring-boot-3.4.0.jar:3.4.0]
+	at org.springframework.util.function.ThrowingConsumer$1.acceptWithException(ThrowingConsumer.java:82) ~[spring-core-6.2.0.jar:6.2.0]
+	at org.springframework.util.function.ThrowingConsumer.accept(ThrowingConsumer.java:60) ~[spring-core-6.2.0.jar:6.2.0]
+	at org.springframework.util.function.ThrowingConsumer$1.accept(ThrowingConsumer.java:86) ~[spring-core-6.2.0.jar:6.2.0]
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:796) ~[spring-boot-3.4.0.jar:3.4.0]
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:787) ~[spring-boot-3.4.0.jar:3.4.0]
+	at org.springframework.boot.SpringApplication.lambda$callRunners$3(SpringApplication.java:772) ~[spring-boot-3.4.0.jar:3.4.0]
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184) ~[na:na]
+	at java.base/java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:357) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:510) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499) ~[na:na]
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151) ~[na:na]
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596) ~[na:na]
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:772) ~[spring-boot-3.4.0.jar:3.4.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:325) ~[spring-boot-3.4.0.jar:3.4.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361) ~[spring-boot-3.4.0.jar:3.4.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350) ~[spring-boot-3.4.0.jar:3.4.0]
+	at com.example.demoproject.DemoProjectApplication.main(DemoProjectApplication.java:10) ~[classes/:na]
+Caused by: org.hibernate.exception.ConstraintViolationException: could not execute statement [NULL not allowed for column "USER_ID"; SQL statement:
+insert into users (created_at,draw_limit,password,remaining_draws,updated_at,user_id,username,id) values (?,?,?,?,?,?,?,default) [23502-232]] [insert into users (created_at,draw_limit,password,remaining_draws,updated_at,user_id,username,id) values (?,?,?,?,?,?,?,default)]
+	at org.hibernate.exception.internal.SQLExceptionTypeDelegate.convert(SQLExceptionTypeDelegate.java:62) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:197) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.id.insert.GetGeneratedKeysDelegate.performMutation(GetGeneratedKeysDelegate.java:116) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.engine.jdbc.mutation.internal.MutationExecutorSingleNonBatched.performNonBatchedOperations(MutationExecutorSingleNonBatched.java:47) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.engine.jdbc.mutation.internal.AbstractMutationExecutor.execute(AbstractMutationExecutor.java:55) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.persister.entity.mutation.InsertCoordinatorStandard.doStaticInserts(InsertCoordinatorStandard.java:194) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.persister.entity.mutation.InsertCoordinatorStandard.coordinateInsert(InsertCoordinatorStandard.java:132) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.persister.entity.mutation.InsertCoordinatorStandard.insert(InsertCoordinatorStandard.java:95) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.action.internal.EntityIdentityInsertAction.execute(EntityIdentityInsertAction.java:85) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.engine.spi.ActionQueue.execute(ActionQueue.java:682) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.engine.spi.ActionQueue.addResolvedEntityInsertAction(ActionQueue.java:293) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.engine.spi.ActionQueue.addInsertAction(ActionQueue.java:274) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.engine.spi.ActionQueue.addAction(ActionQueue.java:324) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.addInsertAction(AbstractSaveEventListener.java:393) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.performSaveOrReplicate(AbstractSaveEventListener.java:307) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.performSave(AbstractSaveEventListener.java:223) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.event.internal.AbstractSaveEventListener.saveWithGeneratedId(AbstractSaveEventListener.java:136) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.entityIsTransient(DefaultPersistEventListener.java:177) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.persist(DefaultPersistEventListener.java:95) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.onPersist(DefaultPersistEventListener.java:79) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.event.internal.DefaultPersistEventListener.onPersist(DefaultPersistEventListener.java:55) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:127) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.internal.SessionImpl.firePersist(SessionImpl.java:761) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at org.hibernate.internal.SessionImpl.persist(SessionImpl.java:745) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:320) ~[spring-orm-6.2.0.jar:6.2.0]
+	at jdk.proxy2/jdk.proxy2.$Proxy140.persist(Unknown Source) ~[na:na]
+	at org.springframework.data.jpa.repository.support.SimpleJpaRepository.save(SimpleJpaRepository.java:623) ~[spring-data-jpa-3.4.0.jar:3.4.0]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359) ~[spring-aop-6.2.0.jar:6.2.0]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker$RepositoryFragmentMethodInvoker.lambda$new$0(RepositoryMethodInvoker.java:277) ~[spring-data-commons-3.4.0.jar:3.4.0]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170) ~[spring-data-commons-3.4.0.jar:3.4.0]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158) ~[spring-data-commons-3.4.0.jar:3.4.0]
+	at org.springframework.data.repository.core.support.RepositoryComposition$RepositoryFragments.invoke(RepositoryComposition.java:515) ~[spring-data-commons-3.4.0.jar:3.4.0]
+	at org.springframework.data.repository.core.support.RepositoryComposition.invoke(RepositoryComposition.java:284) ~[spring-data-commons-3.4.0.jar:3.4.0]
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$ImplementationMethodExecutionInterceptor.invoke(RepositoryFactorySupport.java:752) ~[spring-data-commons-3.4.0.jar:3.4.0]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.0.jar:6.2.0]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:174) ~[spring-data-commons-3.4.0.jar:3.4.0]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149) ~[spring-data-commons-3.4.0.jar:3.4.0]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.0.jar:6.2.0]
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69) ~[spring-data-commons-3.4.0.jar:3.4.0]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.0.jar:6.2.0]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380) ~[spring-tx-6.2.0.jar:6.2.0]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.2.0.jar:6.2.0]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.0.jar:6.2.0]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138) ~[spring-tx-6.2.0.jar:6.2.0]
+	... 27 common frames omitted
+Caused by: org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException: NULL not allowed for column "USER_ID"; SQL statement:
+insert into users (created_at,draw_limit,password,remaining_draws,updated_at,user_id,username,id) values (?,?,?,?,?,?,?,default) [23502-232]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:520) ~[h2-2.3.232.jar:2.3.232]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489) ~[h2-2.3.232.jar:2.3.232]
+	at org.h2.message.DbException.get(DbException.java:223) ~[h2-2.3.232.jar:2.3.232]
+	at org.h2.message.DbException.get(DbException.java:199) ~[h2-2.3.232.jar:2.3.232]
+	at org.h2.table.Column.validateConvertUpdateSequence(Column.java:402) ~[h2-2.3.232.jar:2.3.232]
+	at org.h2.table.Table.convertInsertRow(Table.java:963) ~[h2-2.3.232.jar:2.3.232]
+	at org.h2.command.dml.Insert.insertRows(Insert.java:167) ~[h2-2.3.232.jar:2.3.232]
+	at org.h2.command.dml.Insert.update(Insert.java:135) ~[h2-2.3.232.jar:2.3.232]
+	at org.h2.command.CommandContainer.executeUpdateWithGeneratedKeys(CommandContainer.java:212) ~[h2-2.3.232.jar:2.3.232]
+	at org.h2.command.CommandContainer.update(CommandContainer.java:133) ~[h2-2.3.232.jar:2.3.232]
+	at org.h2.command.Command.executeUpdate(Command.java:304) ~[h2-2.3.232.jar:2.3.232]
+	at org.h2.command.Command.executeUpdate(Command.java:248) ~[h2-2.3.232.jar:2.3.232]
+	at org.h2.jdbc.JdbcPreparedStatement.executeUpdateInternal(JdbcPreparedStatement.java:213) ~[h2-2.3.232.jar:2.3.232]
+	at org.h2.jdbc.JdbcPreparedStatement.executeUpdate(JdbcPreparedStatement.java:172) ~[h2-2.3.232.jar:2.3.232]
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeUpdate(ProxyPreparedStatement.java:61) ~[HikariCP-5.1.0.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeUpdate(HikariProxyPreparedStatement.java) ~[HikariCP-5.1.0.jar:na]
+	at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:194) ~[hibernate-core-6.6.2.Final.jar:6.6.2.Final]
+	... 73 common frames omitted
+
+2025-08-03T18:24:31.325+08:00  INFO 31623 --- [           main] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-08-03T18:24:31.332+08:00  INFO 31623 --- [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-08-03T18:24:31.335+08:00  INFO 31623 --- [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-08-03T18:24:31.336+08:00 DEBUG 31623 --- [           main] org.hibernate.SQL                        : 
+    drop table if exists activities cascade 
+Hibernate: 
+    drop table if exists activities cascade 
+2025-08-03T18:24:31.336+08:00 DEBUG 31623 --- [           main] org.hibernate.SQL                        : 
+    drop table if exists draw_records cascade 
+Hibernate: 
+    drop table if exists draw_records cascade 
+2025-08-03T18:24:31.337+08:00 DEBUG 31623 --- [           main] org.hibernate.SQL                        : 
+    drop table if exists prizes cascade 
+Hibernate: 
+    drop table if exists prizes cascade 
+2025-08-03T18:24:31.337+08:00 DEBUG 31623 --- [           main] org.hibernate.SQL                        : 
+    drop table if exists users cascade 
+Hibernate: 
+    drop table if exists users cascade 
+2025-08-03T18:24:31.339+08:00  INFO 31623 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-08-03T18:24:31.340+08:00  INFO 31623 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  4.086 s
+[INFO] Finished at: 2025-08-03T18:24:31+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:3.4.0:run (default-cli) on project DemoProject: Process terminated with exit code: 1 -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException

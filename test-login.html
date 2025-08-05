@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Test</title>
+</head>
+<body>
+    <h1>Login Test</h1>
+    <button onclick="testLogin()">Test Login</button>
+    <div id="result"></div>
+
+    <script>
+        async function testLogin() {
+            try {
+                // Step 1: Login
+                const loginResponse = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: 'user',
+                        password: 'user123'
+                    })
+                });
+                
+                const loginData = await loginResponse.json();
+                
+                if (loginResponse.ok && loginData.token) {
+                    // Store token
+                    localStorage.setItem('jwtToken', loginData.token);
+                    localStorage.setItem('username', loginData.username);
+                    
+                    document.getElementById('result').innerHTML = `
+                        <h3>Login Successful!</h3>
+                        <p>Token: ${loginData.token.substring(0, 50)}...</p>
+                        <p>Username: ${loginData.username}</p>
+                        <p>localStorage jwtToken: ${localStorage.getItem('jwtToken') ? 'SET' : 'NOT SET'}</p>
+                        <p>localStorage username: ${localStorage.getItem('username')}</p>
+                    `;
+                    
+                    // Step 2: Test API call
+                    const apiResponse = await fetch('/api/luckydraw/user-activity/summer-2024', {
+                        headers: {
+                            'Authorization': `Bearer ${loginData.token}`
+                        }
+                    });
+                    
+                    const apiData = await apiResponse.json();
+                    
+                    if (apiResponse.ok) {
+                        document.getElementById('result').innerHTML += `
+                            <h3>API Call Successful!</h3>
+                            <p>Username: ${apiData.username}</p>
+                            <p>Max Draws: ${apiData.maxDraws}</p>
+                            <p>Current Draws: ${apiData.currentDraws}</p>
+                        `;
+                    } else {
+                        document.getElementById('result').innerHTML += `
+                            <h3>API Call Failed!</h3>
+                            <p>Status: ${apiResponse.status}</p>
+                            <p>Response: ${JSON.stringify(apiData)}</p>
+                        `;
+                    }
+                } else {
+                    document.getElementById('result').innerHTML = `
+                        <h3>Login Failed!</h3>
+                        <p>Response: ${JSON.stringify(loginData)}</p>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('result').innerHTML = `
+                    <h3>Error!</h3>
+                    <p>${error.message}</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html> 

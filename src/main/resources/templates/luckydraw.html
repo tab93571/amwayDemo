@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucky Draw</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .user-info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .draw-section {
+            margin-bottom: 30px;
+        }
+        .draw-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .draw-count-input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 80px;
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .btn-primary {
+            background-color: #2196F3;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #1976D2;
+        }
+        .btn-secondary {
+            background-color: #FF9800;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #F57C00;
+        }
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #2196F3;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .result {
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: none;
+        }
+        .result.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .result.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .prize-info {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: none;
+        }
+        .prize-name {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        .prize-description {
+            color: #666;
+        }
+        .multiple-results {
+            margin-top: 20px;
+        }
+        .result-item {
+            background: #f8f9fa;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border-left: 4px solid #2196F3;
+        }
+        .logout-button {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+        .activity-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: #e8f5e8;
+            border-radius: 5px;
+            border-left: 4px solid #28a745;
+        }
+        .activity-info h4 {
+            margin: 0 0 5px 0;
+            color: #155724;
+        }
+        .activity-info p {
+            margin: 5px 0;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎲 Lucky Draw</h1>
+        </div>
+        
+        <div class="user-info">
+            <strong>Welcome, <span id="username">User</span>!</strong>
+            <div id="userActivityInfo" class="activity-info"></div>
+        </div>
+        
+        <div class="draw-section">
+            <h3>Select Activity</h3>
+            <select id="activitySelect" class="draw-count-input" onchange="onActivityChange()">
+                <option value="">Loading activities...</option>
+            </select>
+        </div>
+        
+        <div class="draw-section">
+            <h3>Single Draw</h3>
+            <button id="drawBtn" class="btn btn-primary" onclick="draw()">🎲 Draw Prize!</button>
+        </div>
+        
+        <div class="draw-section">
+            <h3>Multiple Draws</h3>
+            <div class="draw-controls">
+                <label for="drawCount">Number of draws:</label>
+                <input type="number" id="drawCount" class="draw-count-input" value="3">
+                <button id="multipleDrawBtn" class="btn btn-secondary" onclick="multipleDraw()">🎲 Draw Multiple Prizes!</button>
+            </div>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Drawing your prize...</p>
+        </div>
+        
+        <div id="result" class="result"></div>
+        <div id="prizeInfo" class="prize-info"></div>
+        <div id="multipleResults" class="multiple-results"></div>
+        
+        <button class="logout-button" onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        // Check if user is logged in on page load
+        window.onload = function() {
+            const token = localStorage.getItem('jwtToken');
+            const username = localStorage.getItem('username');
+            
+            if (!token) {
+                // Redirect to login if no token
+                window.location.href = '/login';
+                return;
+            }
+            
+            // Display username
+            if (username) {
+                document.getElementById('username').textContent = username;
+            }
+
+            // Load and display user activity information
+            loadUserActivityInfo();
+            loadActivities(); // Load activities on page load
+        };
+        
+        async function draw() {
+            const token = localStorage.getItem('jwtToken');
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+            
+            const drawBtn = document.getElementById('drawBtn');
+            const resultDiv = document.getElementById('result');
+            const prizeInfoDiv = document.getElementById('prizeInfo');
+            const loadingDiv = document.getElementById('loading');
+            const multipleResultsDiv = document.getElementById('multipleResults');
+            
+            // Disable button and show loading
+            drawBtn.disabled = true;
+            drawBtn.textContent = 'Drawing...';
+            loadingDiv.style.display = 'block';
+            resultDiv.style.display = 'none';
+            prizeInfoDiv.style.display = 'none';
+            multipleResultsDiv.innerHTML = '';
+            
+            try {
+                const activityId = document.getElementById('activitySelect').value;
+                if (!activityId) {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = 'Please select an activity first.';
+                    resultDiv.style.display = 'block';
+                    drawBtn.disabled = false;
+                    drawBtn.textContent = '🎲 Draw Prize!';
+                    loadingDiv.style.display = 'none';
+                    return;
+                }
+
+                // Using new split API endpoint
+                const response = await fetch('/api/luckydraw/draw/single', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        activityId: parseInt(activityId)
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = 'Draw completed successfully!';
+                    resultDiv.style.display = 'block';
+                    
+                    if (data.prizeName && data.prizeDescription) {
+                        prizeInfoDiv.innerHTML = `
+                            <div class="prize-name">${data.prizeName}</div>
+                            <div class="prize-description">${data.prizeDescription}</div>
+                        `;
+                        prizeInfoDiv.style.display = 'block';
+                    }
+                    
+                    // Refresh user activity info after successful draw
+                    loadUserActivityInfo();
+                } else {
+                    resultDiv.className = 'result error';
+                    if (data.errorCode && data.message) {
+                        resultDiv.textContent = `Error (${data.errorCode}): ${data.message}`;
+                    } else {
+                        resultDiv.textContent = data.message || 'Draw failed. Please try again.';
+                    }
+                    resultDiv.style.display = 'block';
+                    prizeInfoDiv.style.display = 'none';
+                }
+                
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = 'Network error. Please try again.';
+                resultDiv.style.display = 'block';
+                prizeInfoDiv.style.display = 'none';
+            } finally {
+                // Re-enable button and hide loading
+                drawBtn.disabled = false;
+                drawBtn.textContent = '🎲 Draw Prize!';
+                loadingDiv.style.display = 'none';
+            }
+        }
+        
+        async function multipleDraw() {
+            const token = localStorage.getItem('jwtToken');
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+            
+            const drawCount = parseInt(document.getElementById('drawCount').value);
+            const activityId = document.getElementById('activitySelect').value;
+
+            if (!activityId) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = 'Please select an activity first.';
+                resultDiv.style.display = 'block';
+                multipleDrawBtn.disabled = false;
+                multipleDrawBtn.textContent = '🎲 Draw Multiple Prizes!';
+                loadingDiv.style.display = 'none';
+                return;
+            }
+            
+            const multipleDrawBtn = document.getElementById('multipleDrawBtn');
+            const resultDiv = document.getElementById('result');
+            const prizeInfoDiv = document.getElementById('prizeInfo');
+            const loadingDiv = document.getElementById('loading');
+            const multipleResultsDiv = document.getElementById('multipleResults');
+            
+            // Disable button and show loading
+            multipleDrawBtn.disabled = true;
+            multipleDrawBtn.textContent = 'Drawing...';
+            loadingDiv.style.display = 'block';
+            resultDiv.style.display = 'none';
+            prizeInfoDiv.style.display = 'none';
+            multipleResultsDiv.innerHTML = '';
+            
+            try {
+                // Using new split API endpoint
+                const response = await fetch('/api/luckydraw/draw/multiple', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        activityId: parseInt(activityId),
+                        drawCount: drawCount
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = `Multiple draws completed successfully!`;
+                    resultDiv.style.display = 'block';
+                    
+                    // Display multiple results
+                    if (data.results && data.results.length > 0) {
+                        let resultsHtml = '<h4>Your Prizes:</h4>';
+                        data.results.forEach((result, index) => {
+                            resultsHtml += `
+                                <div class="result-item">
+                                    <strong>Draw ${index + 1}:</strong> ${result.prizeName} - ${result.prizeDescription}
+                                </div>
+                            `;
+                        });
+                        multipleResultsDiv.innerHTML = resultsHtml;
+                    }
+                    
+                    // Refresh user activity info after successful multiple draws
+                    loadUserActivityInfo();
+                } else {
+                    resultDiv.className = 'result error';
+                    if (data.errorCode && data.message) {
+                        resultDiv.textContent = `Error (${data.errorCode}): ${data.message}`;
+                    } else {
+                        resultDiv.textContent = data.message || 'Multiple draw failed. Please try again.';
+                    }
+                    resultDiv.style.display = 'block';
+                }
+                
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = 'Network error. Please try again.';
+                resultDiv.style.display = 'block';
+            } finally {
+                // Re-enable button and hide loading
+                multipleDrawBtn.disabled = false;
+                multipleDrawBtn.textContent = '🎲 Draw Multiple Prizes!';
+                loadingDiv.style.display = 'none';
+            }
+        }
+
+        async function loadUserActivityInfo() {
+            const token = localStorage.getItem('jwtToken');
+            if (!token) {
+                return;
+            }
+
+            const activityId = document.getElementById('activitySelect').value;
+            if (!activityId) {
+                document.getElementById('userActivityInfo').style.display = 'none';
+                return; // No activity selected
+            }
+
+            try {
+                // Using new split API endpoint
+                const response = await fetch(`/api/luckydraw/user/activity/${activityId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    const userActivityInfoDiv = document.getElementById('userActivityInfo');
+                    userActivityInfoDiv.innerHTML = `
+                        <h4>Your Draw Status:</h4>
+                        <p>Draws Used: ${data.currentDraws} / ${data.maxDraws}</p>
+                        <p>Remaining Draws: ${data.remainingDraws}</p>
+                    `;
+                    userActivityInfoDiv.style.display = 'block';
+                } else {
+                    console.error('Failed to load user activity info:', data.message);
+                    document.getElementById('userActivityInfo').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Network error loading user activity info:', error);
+                document.getElementById('userActivityInfo').style.display = 'none';
+            }
+        }
+
+        async function loadActivities() {
+            const token = localStorage.getItem('jwtToken');
+            if (!token) {
+                return;
+            }
+
+            try {
+                // Using new split API endpoint
+                const response = await fetch('/api/luckydraw/activity/list', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    const activitySelect = document.getElementById('activitySelect');
+                    activitySelect.innerHTML = '<option value="">Select an Activity</option>';
+                    data.forEach(activity => {
+                        activitySelect.innerHTML += `<option value="${activity.activityId}">${activity.name}</option>`;
+                    });
+                    // Set default activity to the first one if available
+                    if (activitySelect.options.length > 1) {
+                        activitySelect.value = activitySelect.options[1].value;
+                        onActivityChange(); // Update activity info after setting default
+                    }
+                } else {
+                    console.error('Failed to load activities:', data.message);
+                    document.getElementById('activitySelect').innerHTML = '<option value="">Failed to load activities.</option>';
+                }
+            } catch (error) {
+                console.error('Network error loading activities:', error);
+                document.getElementById('activitySelect').innerHTML = '<option value="">Network error loading activities.</option>';
+            }
+        }
+
+        function onActivityChange() {
+            loadUserActivityInfo();
+        }
+        
+        function logout() {
+            // Clear localStorage and redirect to login
+            localStorage.removeItem('jwtToken');
+            localStorage.removeItem('username');
+            window.location.href = '/login';
+        }
+    </script>
+</body>
+</html> 

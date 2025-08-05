@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+        .user-info {
+            margin-top: 10px;
+            font-size: 1.1em;
+        }
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+            margin-top: -30px;
+        }
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .section h2 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .user-list, .activity-list, .prize-list {
+            display: grid;
+            gap: 15px;
+        }
+        .user-card, .activity-card, .prize-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .user-card h3, .activity-card h3, .prize-card h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .user-info-item, .activity-info-item, .prize-info-item {
+            margin: 5px 0;
+            color: #666;
+        }
+        .role-badge {
+            background: #28a745;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            display: inline-block;
+        }
+        .role-badge.admin {
+            background: #dc3545;
+        }
+        .activity-selector {
+            margin-bottom: 20px;
+        }
+        .activity-selector select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            width: 200px;
+        }
+        .prize-actions {
+            margin-top: 10px;
+        }
+        .edit-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        .edit-btn:hover {
+            background: #0056b3;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .error-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .error-icon {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        .error-title {
+            margin-right: 8px;
+        }
+        
+        .error-code {
+            color: #666;
+            font-size: 12px;
+        }
+        
+        .error-message {
+            color: #333;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .success-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .success-icon {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        .success-title {
+            margin-right: 8px;
+        }
+        
+        .success-message {
+            color: #333;
+        }
+        
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            color: #333;
+        }
+        
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: #000;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        .form-group textarea {
+            height: 80px;
+            resize: vertical;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .btn-save {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .btn-cancel:hover {
+            background: #5a6268;
+        }
+        
+        .btn-save:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Admin Dashboard</h1>
+            <div class="user-info">
+                Welcome, <span id="username">Admin</span>!
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- Users Section -->
+        <div class="section">
+            <h2>👥 Users</h2>
+            <div id="users-container">
+                <div class="loading">Loading users...</div>
+            </div>
+        </div>
+
+        <!-- Activities Section -->
+        <div class="section">
+            <h2>🎪 Activities</h2>
+            <div id="activities-container">
+                <div class="loading">Loading activities...</div>
+            </div>
+        </div>
+
+        <!-- Prizes Section -->
+        <div class="section">
+            <h2>🏆 Prizes</h2>
+            <div class="activity-selector">
+                <label for="activity-select">Select Activity:</label>
+                <select id="activity-select" onchange="loadPrizes()">
+                    <option value="">Choose an activity...</option>
+                </select>
+            </div>
+            <div id="prizes-container">
+                <div class="loading">Select an activity to view prizes</div>
+            </div>
+        </div>
+
+        <!-- Draw History Section -->
+        <div class="section">
+            <h2>📊 Draw History</h2>
+            <div class="activity-selector">
+                <label for="history-activity-select">Select Activity:</label>
+                <select id="history-activity-select" onchange="loadDrawHistory()">
+                    <option value="">Choose an activity...</option>
+                </select>
+            </div>
+            <div id="history-container">
+                <div class="loading">Select an activity to view draw history</div>
+            </div>
+        </div>
+
+        <!-- Audit Logs Section -->
+        <div class="section">
+            <h2>🔍 Audit Logs</h2>
+            <div class="activity-selector">
+                <label for="audit-filter">Filter by:</label>
+                <select id="audit-filter" onchange="loadAuditLogs()">
+                    <option value="all">All Logs</option>
+                    <option value="ACTIVITY">Activity Updates</option>
+                    <option value="PRIZE">Prize Updates</option>
+                </select>
+            </div>
+            <div id="audit-container">
+                <div class="loading">Loading audit logs...</div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- Activity Edit Modal -->
+    <div id="activityModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Activity</h2>
+                <span class="close" onclick="closeActivityModal()">&times;</span>
+            </div>
+            <form id="activityEditForm">
+                <div class="form-group">
+                    <label for="activityName">Name:</label>
+                    <input type="text" id="activityName" required>
+                </div>
+                <div class="form-group">
+                    <label for="activityDescription">Description:</label>
+                    <textarea id="activityDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="activityMaxDraws">Max Draws:</label>
+                    <input type="number" id="activityMaxDraws" min="1" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeActivityModal()">Cancel</button>
+                    <button type="submit" class="btn-save">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Prize Edit Modal -->
+    <div id="prizeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Prize</h2>
+                <span class="close" onclick="closePrizeModal()">&times;</span>
+            </div>
+            <form id="prizeEditForm">
+                <div class="form-group">
+                    <label for="prizeName">Name:</label>
+                    <input type="text" id="prizeName" required>
+                </div>
+                <div class="form-group">
+                    <label for="prizeDescription">Description:</label>
+                    <textarea id="prizeDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="prizeQuantity">Quantity:</label>
+                    <input type="number" id="prizeQuantity" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="prizeProbability">Probability (%):</label>
+                    <input type="number" id="prizeProbability" min="0" max="100" step="0.1" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closePrizeModal()">Cancel</button>
+                    <button type="submit" class="btn-save">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('jwtToken');
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+
+            // Check if user is admin
+            const role = getRoleFromToken(token);
+            if (role !== 'ROLE_ADMIN') {
+                alert('Access denied. Admin role required.');
+                window.location.href = '/luckydraw';
+                return;
+            }
+
+            // Set username
+            const username = getUsernameFromToken(token);
+            document.getElementById('username').textContent = username;
+
+            // Load data
+            console.log('Loading admin data...');
+            loadUsers();
+            loadActivities();
+            loadAuditLogs();
+        });
+
+        function getRoleFromToken(token) {
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                return payload.role;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function getUsernameFromToken(token) {
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                return payload.sub;
+            } catch (e) {
+                return 'Admin';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('jwtToken');
+            window.location.href = '/login';
+        }
+
+        async function loadUsers() {
+            console.log('Loading users...');
+            try {
+                const response = await fetch('/api/admin/users', {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load users');
+                }
+
+                const users = await response.json();
+                console.log('Users loaded:', users);
+                displayUsers(users);
+            } catch (error) {
+                console.error('Load users error:', error);
+                document.getElementById('users-container').innerHTML = 
+                    '<div class="error">Error loading users: ' + error.message + '</div>';
+            }
+        }
+
+        function displayUsers(users) {
+            const container = document.getElementById('users-container');
+            if (users.length === 0) {
+                container.innerHTML = '<div class="loading">No users found</div>';
+                return;
+            }
+
+            const usersHtml = users.map(user => `
+                <div class="user-card">
+                    <h3>${user.username}</h3>
+                    <div class="user-info-item">
+                        <strong>Role:</strong> 
+                        <span class="role-badge ${user.role === 'ROLE_ADMIN' ? 'admin' : ''}">${user.role}</span>
+                    </div>
+                    <div class="user-info-item">
+                        <strong>ID:</strong> ${user.userId}
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = usersHtml;
+        }
+
+        async function loadActivities() {
+            console.log('Loading activities...');
+            try {
+                const response = await fetch('/api/admin/activities', {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load activities');
+                }
+
+                const activities = await response.json();
+                console.log('Activities loaded:', activities);
+                displayActivities(activities);
+                populateActivitySelector(activities);
+            } catch (error) {
+                console.error('Load activities error:', error);
+                document.getElementById('activities-container').innerHTML = 
+                    '<div class="error">Error loading activities: ' + error.message + '</div>';
+            }
+        }
+
+        function displayActivities(activities) {
+            const container = document.getElementById('activities-container');
+            if (activities.length === 0) {
+                container.innerHTML = '<div class="loading">No activities found</div>';
+                return;
+            }
+
+            const activitiesHtml = activities.map(activity => `
+                <div class="activity-card">
+                    <h3>${activity.name}</h3>
+                    <div class="activity-info-item">
+                        <strong>ID:</strong> ${activity.activityId}
+                    </div>
+                    <div class="activity-info-item">
+                        <strong>Description:</strong> ${activity.description}
+                    </div>
+                    <div class="activity-info-item">
+                        <strong>Max Draws:</strong> ${activity.maxDraws}
+                    </div>
+                    <div class="activity-actions">
+                        <button class="edit-btn" onclick="editActivity('${activity.activityId}', '${activity.name}', '${activity.description}', ${activity.maxDraws})">
+                            Edit Activity
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = activitiesHtml;
+        }
+
+        function populateActivitySelector(activities) {
+            const select = document.getElementById('activity-select');
+            const historySelect = document.getElementById('history-activity-select');
+            
+            select.innerHTML = '<option value="">Choose an activity...</option>';
+            historySelect.innerHTML = '<option value="">Choose an activity...</option>';
+            
+            activities.forEach(activity => {
+                const option = document.createElement('option');
+                option.value = activity.activityId;
+                option.textContent = activity.name;
+                select.appendChild(option);
+                
+                const historyOption = document.createElement('option');
+                historyOption.value = activity.activityId;
+                historyOption.textContent = activity.name;
+                historySelect.appendChild(historyOption);
+            });
+        }
+
+        async function loadPrizes() {
+            const activityId = document.getElementById('activity-select').value;
+            if (!activityId) {
+                document.getElementById('prizes-container').innerHTML = 
+                    '<div class="loading">Select an activity to view prizes</div>';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/admin/activities/${activityId}/prizes`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load prizes');
+                }
+
+                const prizes = await response.json();
+                displayPrizes(prizes, activityId);
+            } catch (error) {
+                document.getElementById('prizes-container').innerHTML = 
+                    '<div class="error">Error loading prizes: ' + error.message + '</div>';
+            }
+        }
+
+        function displayPrizes(prizes, activityId) {
+            const container = document.getElementById('prizes-container');
+            if (prizes.length === 0) {
+                container.innerHTML = '<div class="loading">No prizes found for this activity</div>';
+                return;
+            }
+
+            const prizesHtml = prizes.map(prize => `
+                <div class="prize-card">
+                    <h3>${prize.name}</h3>
+                    <div class="prize-info-item">
+                        <strong>Description:</strong> ${prize.description}
+                    </div>
+                    <div class="prize-info-item">
+                        <strong>Quantity:</strong> ${prize.quantity}
+                    </div>
+                    <div class="prize-info-item">
+                        <strong>Probability:</strong> ${(prize.probability * 100).toFixed(1)}%
+                    </div>
+                    <div class="prize-info-item">
+                        <strong>Remaining:</strong> ${prize.remainingQuantity}
+                    </div>
+                    <div class="prize-actions">
+                        <button class="edit-btn" onclick="editPrize('${activityId}', ${prize.id}, '${prize.name}', '${prize.description}', ${prize.quantity}, ${prize.probability})">
+                            Edit Prize
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = prizesHtml;
+        }
+
+        // Global variables for edit modals
+        let currentActivityId = null;
+        let currentPrizeId = null;
+
+        function editActivity(activityId, name, description, maxDraws) {
+            currentActivityId = activityId;
+            document.getElementById('activityName').value = name;
+            document.getElementById('activityDescription').value = description;
+            document.getElementById('activityMaxDraws').value = maxDraws;
+            document.getElementById('activityModal').style.display = 'block';
+        }
+
+        function closeActivityModal() {
+            document.getElementById('activityModal').style.display = 'none';
+            currentActivityId = null;
+        }
+
+        function editPrize(activityId, prizeId, name, description, quantity, probability) {
+            currentActivityId = activityId;
+            currentPrizeId = prizeId;
+            document.getElementById('prizeName').value = name;
+            document.getElementById('prizeDescription').value = description;
+            document.getElementById('prizeQuantity').value = quantity;
+            document.getElementById('prizeProbability').value = (probability * 100).toFixed(1);
+            document.getElementById('prizeModal').style.display = 'block';
+        }
+
+        function closePrizeModal() {
+            document.getElementById('prizeModal').style.display = 'none';
+            currentActivityId = null;
+            currentPrizeId = null;
+        }
+
+        // Activity edit form submission
+        document.getElementById('activityEditForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('activityName').value;
+            const description = document.getElementById('activityDescription').value;
+            const maxDraws = parseInt(document.getElementById('activityMaxDraws').value);
+
+            try {
+                const response = await fetch(`/api/admin/activities/${currentActivityId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        description: description,
+                        maxDraws: maxDraws
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to update activity');
+                }
+
+                // Show success message
+                alert('Activity updated successfully!');
+                closeActivityModal();
+                
+                // Reload activities
+                loadActivities();
+                
+            } catch (error) {
+                alert('Error updating activity: ' + error.message);
+            }
+        });
+
+        // Prize edit form submission
+        document.getElementById('prizeEditForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('prizeName').value;
+            const description = document.getElementById('prizeDescription').value;
+            const quantity = parseInt(document.getElementById('prizeQuantity').value);
+            const probability = parseFloat(document.getElementById('prizeProbability').value) / 100;
+
+            try {
+                const response = await fetch(`/api/admin/activities/${currentActivityId}/prizes/${currentPrizeId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        description: description,
+                        quantity: quantity,
+                        probability: probability
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to update prize');
+                }
+
+                // Show success message
+                alert('Prize updated successfully!');
+                closePrizeModal();
+                
+                // Reload prizes
+                loadPrizes();
+                
+            } catch (error) {
+                alert('Error updating prize: ' + error.message);
+            }
+        });
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const activityModal = document.getElementById('activityModal');
+            const prizeModal = document.getElementById('prizeModal');
+            
+            if (event.target === activityModal) {
+                closeActivityModal();
+            }
+            if (event.target === prizeModal) {
+                closePrizeModal();
+            }
+        }
+
+        // Draw History Functions
+        async function loadDrawHistory() {
+            const activityId = document.getElementById('history-activity-select').value;
+            if (!activityId) {
+                document.getElementById('history-container').innerHTML = 
+                    '<div class="loading">Select an activity to view draw history</div>';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/admin/activities/${activityId}/history`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load draw history');
+                }
+
+                const history = await response.json();
+                displayDrawHistory(history);
+            } catch (error) {
+                document.getElementById('history-container').innerHTML = 
+                    '<div class="error">Error loading draw history: ' + error.message + '</div>';
+            }
+        }
+
+        function displayDrawHistory(history) {
+            const container = document.getElementById('history-container');
+            
+            if (!history.history || history.history.length === 0) {
+                container.innerHTML = '<div class="loading">No draw records found for this activity</div>';
+                return;
+            }
+
+            const historyHtml = `
+                <div class="user-card">
+                    <h3>Draw History for Activity: ${history.activityId}</h3>
+                    <div class="user-info-item">
+                        <strong>Total Draws:</strong> ${history.history.length}
+                    </div>
+                    <div class="user-info-item">
+                        <strong>Unique Users:</strong> ${new Set(history.history.map(record => record.username)).size}
+                    </div>
+                    <div class="user-info-item">
+                        <strong>Records:</strong>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        ${history.history.map((record, index) => `
+                            <div class="activity-info-item" style="border-left: 3px solid #667eea; padding-left: 10px; margin: 5px 0;">
+                                <strong>Draw ${index + 1}:</strong> <span style="color: #667eea; font-weight: bold;">${record.username}</span> won ${record.prizeName || 'No Prize'} - ${record.prizeDescription || 'Better luck next time!'}
+                                <br><small style="color: #666;">Time: ${new Date(record.drawTime).toLocaleString()}</small>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = historyHtml;
+        }
+
+        // Audit Logs Functions
+        async function loadAuditLogs() {
+            console.log('Loading audit logs...');
+            const filter = document.getElementById('audit-filter').value;
+            let url = '/api/admin/audit';
+            
+            if (filter !== 'all') {
+                url = `/api/admin/audit/entity/${filter}`;
+            }
+
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load audit logs');
+                }
+
+                const logs = await response.json();
+                console.log('Audit logs loaded:', logs);
+                displayAuditLogs(logs);
+            } catch (error) {
+                console.error('Load audit logs error:', error);
+                document.getElementById('audit-container').innerHTML = 
+                    '<div class="error">Error loading audit logs: ' + error.message + '</div>';
+            }
+        }
+
+        function displayAuditLogs(logs) {
+            const container = document.getElementById('audit-container');
+            
+            if (!logs || logs.length === 0) {
+                container.innerHTML = '<div class="loading">No audit logs found</div>';
+                return;
+            }
+
+            const logsHtml = `
+                <div class="user-card">
+                    <h3>Audit Logs (${logs.length} records)</h3>
+                    <div style="margin-top: 10px;">
+                        ${logs.map((log, index) => `
+                            <div class="activity-info-item" style="border-left: 3px solid #667eea; padding-left: 10px; margin: 5px 0;">
+                                <strong>Log ${index + 1}:</strong> 
+                                <span style="color: #667eea; font-weight: bold;">${log.adminUsername}</span> 
+                                performed <strong>${log.action}</strong> on 
+                                <strong>${log.entityType}</strong> (ID: ${log.entityId})
+                                <br><small style="color: #666;">Time: ${new Date(log.timestamp).toLocaleString()}</small>
+                                ${log.oldValues && log.newValues ? `
+                                    <br><small style="color: #888;">
+                                        <strong>Changes:</strong> 
+                                        <details style="margin-top: 5px;">
+                                            <summary>View Details</summary>
+                                            <div style="background: #f5f5f5; padding: 10px; margin-top: 5px; border-radius: 4px;">
+                                                <strong>Old Values:</strong><br>
+                                                <pre style="font-size: 12px; margin: 5px 0;">${log.oldValues}</pre>
+                                                <strong>New Values:</strong><br>
+                                                <pre style="font-size: 12px; margin: 5px 0;">${log.newValues}</pre>
+                                            </div>
+                                        </details>
+                                    </small>
+                                ` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = logsHtml;
+        }
+
+        // Load audit logs on page load
+        // Note: This is now handled in the main DOMContentLoaded listener above
+    </script>
+</body>
+</html> 

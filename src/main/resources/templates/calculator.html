@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <script src="/js/errorHandler.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .calculator {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 350px;
+            backdrop-filter: blur(10px);
+        }
+
+        .display {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: right;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .current-input {
+            font-size: 24px;
+            color: #495057;
+            margin-bottom: 5px;
+            word-wrap: break-word;
+        }
+
+        .result {
+            font-size: 32px;
+            font-weight: bold;
+            color: #212529;
+        }
+
+        .history {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-number {
+            background: #ffffff;
+            border: 2px solid #dee2e6;
+        }
+
+        .btn-number:hover {
+            background: #f8f9fa;
+            border-color: #adb5bd;
+        }
+
+        .btn-operator {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-operator:hover {
+            background: #0056b3;
+        }
+
+        .btn-equals {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-equals:hover {
+            background: #1e7e34;
+        }
+
+        .btn-clear {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-clear:hover {
+            background: #c82333;
+        }
+
+        .btn-undo {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .btn-undo:hover {
+            background: #e0a800;
+        }
+
+        .btn-redo {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-redo:hover {
+            background: #138496;
+        }
+
+        .btn-negative {
+            background: #6f42c1;
+            color: white;
+        }
+
+        .btn-negative:hover {
+            background: #5a2d91;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .status {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        @media (max-width: 400px) {
+            .calculator {
+                width: 320px;
+                padding: 20px;
+            }
+            
+            .btn {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display">
+            <div class="current-input" id="currentInput">0</div>
+            <div class="result" id="result">0</div>
+            <div class="history" id="history"></div>
+        </div>
+        
+        <div class="buttons">
+            <!-- First row -->
+            <button class="btn btn-clear" onclick="clearCalculator()">C</button>
+            <button class="btn btn-undo" id="undoBtn" onclick="undo()" disabled>↶</button>
+            <button class="btn btn-redo" id="redoBtn" onclick="redo()" disabled>↷</button>
+            <button class="btn btn-operator" onclick="setOperation('/')">÷</button>
+            
+            <!-- Second row -->
+            <button class="btn btn-number" onclick="appendNumber('7')">7</button>
+            <button class="btn btn-number" onclick="appendNumber('8')">8</button>
+            <button class="btn btn-number" onclick="appendNumber('9')">9</button>
+            <button class="btn btn-operator" onclick="setOperation('*')">×</button>
+            
+            <!-- Third row -->
+            <button class="btn btn-number" onclick="appendNumber('4')">4</button>
+            <button class="btn btn-number" onclick="appendNumber('5')">5</button>
+            <button class="btn btn-number" onclick="appendNumber('6')">6</button>
+            <button class="btn btn-operator" onclick="setOperation('-')">−</button>
+            
+            <!-- Fourth row -->
+            <button class="btn btn-number" onclick="appendNumber('1')">1</button>
+            <button class="btn btn-number" onclick="appendNumber('2')">2</button>
+            <button class="btn btn-number" onclick="appendNumber('3')">3</button>
+            <button class="btn btn-operator" onclick="setOperation('+')">+</button>
+            
+            <!-- Fifth row -->
+            <button class="btn btn-negative" onclick="toggleNegative()">±</button>
+            <button class="btn btn-number" onclick="appendNumber('0')">0</button>
+            <button class="btn btn-number" onclick="appendNumber('.')">.</button>
+            <button class="btn btn-equals" onclick="calculate()">=</button>
+        </div>
+        
+        <div class="status" id="status">Ready</div>
+        <div class="error" id="error"></div>
+    </div>
+
+    <script>
+        let left = '';
+        let right = '';
+        let currentOperation = null;
+        let displayValue = '0';
+        let sessionId = null;
+        let undoCount = 0;
+        let redoCount = 0;
+
+
+        function getOperationSymbol(operation) {
+            switch(operation) {
+                case '+': return '+';
+                case '-': return '−';
+                case '*': return '×';
+                case '/': return '÷';
+                default: return operation;
+            }
+        }
+
+        function updateUndoRedoStatus(stackSizes) {
+            if (stackSizes) {
+                undoCount = stackSizes.undoCount;
+                redoCount = stackSizes.redoCount;
+                const canUndo = undoCount > 0;
+                const canRedo = redoCount > 0;
+                document.getElementById('undoBtn').disabled = !canUndo;
+                document.getElementById('redoBtn').disabled = !canRedo;
+                
+                let status = `Undo: ${undoCount} | Redo: ${redoCount}`;
+                document.getElementById('status').textContent = status;
+            } else {
+                undoCount = 0;
+                redoCount = 0;
+                document.getElementById('undoBtn').disabled = true;
+                document.getElementById('redoBtn').disabled = true;
+                document.getElementById('status').textContent = 'Ready';
+            }
+        }
+
+        function updateDisplay() {
+            // Show the full expression in currentInput
+            let expression = '';
+            if (left !== '') {
+                expression += left;
+                if (currentOperation !== null) {
+                    expression += ' ' + getOperationSymbol(currentOperation) + ' ';
+                    if (right !== '') {
+                        expression += right;
+                    }
+                }
+            }
+            
+            document.getElementById('currentInput').textContent = expression || '0';
+            document.getElementById('result').textContent = displayValue;
+            
+            // Disable operation buttons if we have both numbers (ready to calculate)
+            const hasBothNumbers = left !== '' && right !== '';
+            const operationButtons = document.querySelectorAll('.btn-operator');
+            operationButtons.forEach(btn => {
+                btn.disabled = hasBothNumbers;
+            });
+            
+            // Disable number buttons and negative button if we have a result from previous calculation
+            // Only disable if we have undo/redo history (not first time) and we have a result displayed
+            const hasHistory = undoCount > 0 || redoCount > 0;
+            const hasResultFromCalculation = hasHistory && currentOperation === null && left !== '' && left !== '0' && left !== '-' && left !== '-0' && /^-?\d+$/.test(left);
+            const numberButtons = document.querySelectorAll('.btn-number');
+            const negativeButton = document.querySelector('.btn-negative');
+            
+            // Debug: log the condition
+            console.log('hasResultFromCalculation:', hasResultFromCalculation, 'left:', left, 'currentOperation:', currentOperation, 'hasHistory:', hasHistory, 'undoCount:', undoCount, 'redoCount:', redoCount);
+            
+            numberButtons.forEach(btn => {
+                btn.disabled = hasResultFromCalculation;
+            });
+            
+            if (negativeButton) {
+                negativeButton.disabled = hasResultFromCalculation;
+            }
+            
+            // Also disable the negative button in appendMinus function
+            if (hasResultFromCalculation) {
+                return;
+            }
+        }
+
+        function appendNumber(num) {
+            if (currentOperation === null) {
+                // If we have a result from previous calculation, don't allow typing new numbers
+                // User must choose an operation first
+                const hasHistory = undoCount > 0 || redoCount > 0;
+                if (hasHistory && left !== '' && left !== '0' && left !== '-' && left !== '-0' && /^-?\d+$/.test(left)) {
+                    return; // Don't allow typing when we have a result
+                }
+                
+                // Left number (only for new calculations)
+                if (left === '') {
+                    left = num === '.' ? '0.' : num;
+                } else if (left === '-') {
+                    // If we have just a minus sign, append the number
+                    left = '-' + num;
+                } else if (left === '-0') {
+                    // If we have -0, replace with the new number
+                    left = '-' + num;
+                } else {
+                    if (num === '.' && left.includes('.')) return;
+                    if (left === '0' && num !== '.') {
+                        left = num;
+                    } else {
+                        left += num;
+                    }
+                }
+                displayValue = left;
+            } else {
+                // Right number
+                if (right === '') {
+                    right = num === '.' ? '0.' : num;
+                } else if (right === '-') {
+                    // If we have just a minus sign, append the number
+                    right = '-' + num;
+                } else if (right === '-0') {
+                    // If we have -0, replace with the new number
+                    right = '-' + num;
+                } else {
+                    if (num === '.' && right.includes('.')) return;
+                    if (right === '0' && num !== '.') {
+                        right = num;
+                    } else {
+                        right += num;
+                    }
+                }
+                displayValue = right;
+            }
+            updateDisplay();
+        }
+
+        function appendMinus() {
+            if (currentOperation === null) {
+                // If we have a result from previous calculation, don't allow typing new numbers
+                if (left !== '' && left !== '0') {
+                    return;
+                }
+                
+                // Left number
+                if (left === '') {
+                    left = '-';
+                } else if (left === '0') {
+                    left = '-';
+                } else if (!left.startsWith('-')) {
+                    left = '-' + left;
+                }
+                displayValue = left;
+            } else {
+                // Right number
+                if (right === '') {
+                    right = '-';
+                } else if (right === '0') {
+                    right = '-';
+                } else if (!right.startsWith('-')) {
+                    right = '-' + right;
+                }
+                displayValue = right;
+            }
+            updateDisplay();
+        }
+
+        function setOperation(operation) {
+            // Don't allow changing operation if we have both numbers
+            if (left !== '' && right !== '') {
+                return;
+            }
+            
+            if (left === '') {
+                left = '0';
+                displayValue = '0';
+            }
+            
+            currentOperation = operation;
+            right = ''; // Clear right number for new operation
+            displayValue = left;
+            updateDisplay();
+        }
+
+        function calculate() {
+            if (!currentOperation || right === '') {
+                if (currentOperation && left !== '') {
+                    right = left;
+                } else {
+                    return;
+                }
+            }
+            
+            // Perform calculation
+            const request = {
+                left: parseFloat(left),
+                right: parseFloat(right),
+                operation: currentOperation
+            };
+            
+            fetch('/api/calculator/calculate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Session-ID': sessionId
+                },
+                body: JSON.stringify(request)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.error || 'Calculation failed');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Store session ID for undo/redo
+                if (!sessionId) {
+                    sessionId = data.sessionId;
+                }
+                
+                // Update display with result (format for display)
+                const resultValue = data.result.toString();
+                displayValue = resultValue;
+                left = resultValue;
+                right = '';
+                currentOperation = null; // Reset operation so user can start fresh
+                
+                // Update undo/redo status from response
+                updateUndoRedoStatus(data.stackSizes);
+                updateDisplay();
+                clearError();
+            })
+            .catch(async error => {
+                console.error('Calculation error:', error);
+                if (error.response) {
+                    const errorData = await parseErrorResponse(error.response);
+                    showError(errorData.message);
+                } else {
+                    showError('Calculation failed');
+                }
+            });
+        }
+
+        function clearCalculator() {
+            if (!sessionId) {
+                // If no session, just clear frontend
+                left = '';
+                right = '';
+                currentOperation = null;
+                displayValue = '0';
+                undoCount = 0;
+                redoCount = 0;
+                clearError();
+                updateDisplay();
+                return;
+            }
+            
+            // Call backend to clear session history
+            fetch(`/api/calculator/${sessionId}/clear`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Clear failed');
+                }
+                return response.json();
+            })
+            .then(stackSizes => {
+                console.log('Clear response:', stackSizes);
+                // Clear frontend state
+                left = '';
+                right = '';
+                currentOperation = null;
+                displayValue = '0';
+                clearError();
+                
+                // Update undo/redo counts from backend response
+                updateUndoRedoStatus(stackSizes);
+                updateDisplay();
+            })
+            .catch(error => {
+                console.error('Clear error:', error);
+                showError(error.message);
+            });
+        }
+
+        function toggleNegative() {
+            if (currentOperation === null) {
+                // Don't allow toggling if we have a result from previous calculation
+                if (left !== '' && left !== '0' && left !== '-' && left !== '-0' && left.match(/^-?\d+$/)) {
+                    return; // Don't allow toggling when we have a result
+                }
+                
+                // Toggle left number
+                if (left === '') {
+                    left = '-0';
+                } else if (left === '0') {
+                    left = '-0';
+                } else if (left === '-0') {
+                    left = '0';
+                } else if (left.startsWith('-')) {
+                    left = left.substring(1);
+                } else {
+                    left = '-' + left;
+                }
+                displayValue = left;
+            } else {
+                // Toggle right number
+                if (right === '') {
+                    right = '-0';
+                } else if (right === '0') {
+                    right = '-0';
+                } else if (right === '-0') {
+                    right = '0';
+                } else if (right.startsWith('-')) {
+                    right = right.substring(1);
+                } else {
+                    right = '-' + right;
+                }
+                displayValue = right;
+            }
+            updateDisplay();
+        }
+
+        function undo() {
+            if (!sessionId) return;
+            
+            fetch(`/api/calculator/${sessionId}/undo`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 400) {
+                        throw new Error('Nothing to undo');
+                    }
+                    throw new Error('Undo failed');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Update display with previous result
+                displayValue = data.result.toString();
+                left = data.result.toString();
+                right = '';
+                // Keep currentOperation as null so user can continue with operations
+                
+                // Update undo/redo status from response
+                updateUndoRedoStatus(data.stackSizes);
+                updateDisplay();
+                clearError();
+            })
+            .catch(error => {
+                console.error('Undo error:', error);
+                showError(error.message);
+            });
+        }
+
+        function redo() {
+            if (!sessionId) return;
+            
+            fetch(`/api/calculator/${sessionId}/redo`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 400) {
+                        throw new Error('Nothing to redo');
+                    }
+                    throw new Error('Redo failed');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Update display with redone result
+                displayValue = data.result.toString();
+                left = data.result.toString();
+                right = '';
+                // Keep currentOperation as null so user can continue with operations
+                
+                // Update undo/redo status from response
+                updateUndoRedoStatus(data.stackSizes);
+                updateDisplay();
+                clearError();
+            })
+            .catch(error => {
+                console.error('Redo error:', error);
+                showError(error.message);
+            });
+        }
+
+        function showError(message) {
+            document.getElementById('error').textContent = message;
+        }
+
+        function clearError() {
+            document.getElementById('error').textContent = '';
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initCalculatorSession();
+        });
+
+        function initCalculatorSession() {
+            fetch('/api/calculator/init-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                sessionId = data.sessionId;
+                updateDisplay();
+            })
+            .catch(error => {
+                console.error('Error initializing session:', error);
+                updateDisplay();
+            });
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+            
+            if (key >= '0' && key <= '9') {
+                appendNumber(key);
+            } else if (key === '.') {
+                appendNumber('.');
+            } else if (key === '+') {
+                setOperation('+');
+            } else if (key === '-') {
+                // Check if we're in the middle of typing a number (for negative input)
+                const currentInput = currentOperation === null ? left : right;
+                if (currentInput === '' || currentInput === '0' || currentInput === '-') {
+                    appendMinus();
+                } else {
+                    setOperation('-');
+                }
+            } else if (key === '*') {
+                setOperation('*');
+            } else if (key === '/') {
+                setOperation('/');
+            } else if (key === 'Enter' || key === '=') {
+                calculate();
+            } else if (key === 'Escape') {
+                clearCalculator();
+            } else if (key === 'z' && event.ctrlKey) {
+                event.preventDefault();
+                undo();
+            } else if (key === 'y' && event.ctrlKey) {
+                event.preventDefault();
+                redo();
+            }
+        });
+    </script>
+</body>
+</html> 

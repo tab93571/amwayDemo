@@ -71,7 +71,7 @@ public class DrawExecutionService {
         drawValidationService.validateUserMultipleDrawLimit(request.getActivityId(), request.getDrawCount(), activity.getMaxDraws());
 
         List<Prize> availablePrizes = drawValidationService.getAvailablePrizes(activity);
-
+        //todo I shouldn't save drawRecords one my one I should just put in the list and save once
         for (int i = 0; i < request.getDrawCount(); i++) {
             DrawRecord record = new DrawRecord(
                     user,

@@ -107,6 +107,11 @@ public class DrawExecutionService {
     private void updatePrizeInventory(Prize prize) {
 
         try {
+            // Although I use SELECT FOR UPDATE and select by primary key, in MySQL this will only lock a single record.
+            // This means it will use a record lock, not a gap lock, so it shouldn't significantly impact performance.
+            // Also, since the probability of winning a prize is low, requests that actually update prize inventory should be infrequent.
+            // As a result, it won't hit the database too often.
+
             Prize lockedPrize = prizeRepository.findByIdWithLock(prize.getId());
             if (lockedPrize.getQuantity() <= 0) {
                 throw new LuckyDrawException(ErrorConstants.ErrorType.NO_PRIZES_AVAILABLE);

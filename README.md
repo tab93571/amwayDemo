@@ -227,4 +227,32 @@ mvn test
 
 > **Note:** These accounts are automatically created for development and demo purposes.
 
+## 🚀 Future Performance Tuning
+
+### **1. Store Activity Draw Limits in Redis** ✅
+Since the draw limit for each activity does not change frequently, we can cache it in Redis.
+
+**Implementation:**
+- **Cache Key:** `activity:draw_limit:{activityId}`
+- **Cache Value:** `maxDraws`
+- **TTL:** 24 hours (activity limits rarely change)
+- **Sync Strategy:** Delete Redis key when activity draw limit is modified
+
+### **2. Optimize Draw Record Queries** ✅
+To check how many times a user has participated in an activity, we create a composite index on `(activityId, userId)` in the DrawRecord table.
+
+**Implementation:**
+```sql
+-- Composite index for fast user draw count queries
+CREATE INDEX idx_draw_records_activity_user ON draw_records(activity_id, user_id);
+
+
+
+
+
+
+```
+
+
+
 
